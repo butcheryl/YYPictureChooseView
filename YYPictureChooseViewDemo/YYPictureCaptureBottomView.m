@@ -40,7 +40,9 @@
 - (void)reload_view:(NSNotification *)noti {
     [self.submit_button setTitle:[NSString stringWithFormat:@"确定(%ld/8)", self.manager.choosedAsset.count] forState:UIControlStateNormal];
     [self.collectionView reloadData];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.manager.choosedAsset.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+    if (self.manager.choosedAsset.count > 0) {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.manager.choosedAsset.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout

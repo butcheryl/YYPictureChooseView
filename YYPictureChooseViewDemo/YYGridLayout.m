@@ -14,7 +14,6 @@
 
 @implementation YYGridLayout {
     NSArray *_prepareRects;
-    NSInteger _lastIndex;
 }
 
 - (CGSize)collectionViewContentSize
@@ -72,7 +71,7 @@
     NSMutableArray *layoutAttributes = @[].mutableCopy;
     
     CGRect r = [_prepareRects[0][0] CGRectValue];
-    if (CGRectContainsPoint(rect, CGPointMake(r.origin.x, r.origin.y))) {
+    if (CGRectIntersectsRect(r, rect)) {
         UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
         attr.frame = r;
         [layoutAttributes addObject:attr];
@@ -80,7 +79,7 @@
 
     for (NSInteger i = 0; i < [_prepareRects[1] count]; i++) {
         r = [_prepareRects[1][i] CGRectValue];
-        if (CGRectContainsPoint(rect, CGPointMake(r.origin.x, r.origin.y))) {
+        if (CGRectIntersectsRect(r, rect)) {
             UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:1]];
             attr.frame = r;
             [layoutAttributes addObject:attr];
@@ -94,6 +93,15 @@
 {
     UICollectionViewLayoutAttributes *currentAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     return currentAttributes;
+}
+
+- (UICollectionViewLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    UICollectionViewLayoutAttributes *attr = [self layoutAttributesForItemAtIndexPath:itemIndexPath];
+    CGRect r = [_prepareRects[itemIndexPath.section][itemIndexPath.item] CGRectValue];
+    attr.frame = r;
+    
+    return attr;
 }
 
 @end

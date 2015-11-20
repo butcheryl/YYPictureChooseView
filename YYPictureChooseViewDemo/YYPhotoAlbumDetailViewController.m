@@ -36,7 +36,7 @@ UINavigationControllerDelegate>
         self.isCameraRoll = (group == nil ||[[_group valueForProperty:ALAssetsGroupPropertyType] intValue] == ALAssetsGroupSavedPhotos);
         self.picker = [[UIImagePickerController alloc] init];
         self.picker.delegate = self;
-        self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.picker.sourceType = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]?UIImagePickerControllerSourceTypeCamera:UIImagePickerControllerSourceTypeSavedPhotosAlbum;
         self.picker.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
     }
     return self;
