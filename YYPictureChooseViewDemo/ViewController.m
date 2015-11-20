@@ -10,7 +10,7 @@
 #import "YYPictureChooseView.h"
 
 
-@interface ViewController () <YYPictureChooseViewDelegate, YYPictureChooseViewDataSource>
+@interface ViewController ()
 @property (nonatomic, strong) YYPictureChooseView *chooseView;
 @end
 
@@ -19,9 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.chooseView = [[YYPictureChooseView alloc] initWithFrame:CGRectMake(0, 100, CGRectGetWidth(self.view.frame), 200)];
-    self.chooseView.delegate = self;
-    self.chooseView.dataSource = self;
+    self.chooseView = [[YYPictureChooseView alloc] initWithFrame:CGRectMake(0, 100, CGRectGetWidth(self.view.frame), (CGRectGetWidth(self.view.frame) - 5 * 10) / 4 * 2 + 30 + 1)];
+    
     [self.view addSubview:self.chooseView];
 }
 

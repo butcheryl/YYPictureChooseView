@@ -28,6 +28,7 @@
 		3483FECF1BFCAD9F00EACDC5 /* YYPictureCaptureBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3483FECE1BFCAD9F00EACDC5 /* YYPictureCaptureBottomView.m */; };
 		3495FF441BFDCF5A00527B1E /* ALAsset+YYCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = 3495FF431BFDCF5A00527B1E /* ALAsset+YYCompare.m */; };
 		3495FF471BFDD7FC00527B1E /* YYPictureGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3495FF461BFDD7FC00527B1E /* YYPictureGridLayout.m */; };
+		34A27D131BFEE1D60073F642 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34A27D121BFEE1D60073F642 /* MobileCoreServices.framework */; };
 		34A4817D1BFEB8E70023CD44 /* YYGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A4817C1BFEB8E70023CD44 /* YYGridLayout.m */; };
 		34FFA8111BFD5CB90044E62C /* YYPictureCaptureDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FFA8101BFD5CB90044E62C /* YYPictureCaptureDetailViewController.m */; };
 		34FFA8141BFD641D0044E62C /* YYPictureCaptureDetailCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FFA8131BFD641D0044E62C /* YYPictureCaptureDetailCollectionViewCell.m */; };
@@ -75,6 +76,7 @@
 		3495FF431BFDCF5A00527B1E /* ALAsset+YYCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+YYCompare.m"; sourceTree = "<group>"; };
 		3495FF451BFDD7FC00527B1E /* YYPictureGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPictureGridLayout.h; sourceTree = "<group>"; };
 		3495FF461BFDD7FC00527B1E /* YYPictureGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPictureGridLayout.m; sourceTree = "<group>"; };
+		34A27D121BFEE1D60073F642 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		34A4817B1BFEB8E70023CD44 /* YYGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYGridLayout.h; sourceTree = "<group>"; };
 		34A4817C1BFEB8E70023CD44 /* YYGridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYGridLayout.m; sourceTree = "<group>"; };
 		34FFA80F1BFD5CB90044E62C /* YYPictureCaptureDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPictureCaptureDetailViewController.h; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34A27D131BFEE1D60073F642 /* MobileCoreServices.framework in Frameworks */,
 				341812781BFC5E5E00EA039A /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +118,7 @@
 		3467E45B1BFB33FD00E3E589 = {
 			isa = PBXGroup;
 			children = (
+				34A27D121BFEE1D60073F642 /* MobileCoreServices.framework */,
 				341812771BFC5E5E00EA039A /* AssetsLibrary.framework */,
 				3467E4661BFB33FE00E3E589 /* YYPictureChooseViewDemo */,
 				3467E4651BFB33FE00E3E589 /* Products */,

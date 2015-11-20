@@ -17,15 +17,15 @@
 
 @interface YYPictureChooseView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *view;
-@property (nonatomic, strong) YYPictureCoreManager *manager;
 @property (nonatomic, assign) NSInteger mainPictureIndex;
+@property (nonatomic, strong) YYPictureCoreManager *manager;
 @end
 
 @implementation YYPictureChooseView
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor whiteColor];
         self.manager = [[YYPictureCoreManager alloc] init];
         self.choosedData = [NSMutableArray array];
         
@@ -63,7 +63,7 @@
             self.choosedData = [NSMutableArray arrayWithArray:assets];
             [self.view reloadData];
         }];
-        [(UIViewController *)self.delegate presentViewController:navi animated:YES completion:nil];
+        [self.viewController presentViewController:navi animated:YES completion:nil];
     } else {
         __block ALAsset *asset = self.choosedData[indexPath.item];
         YYPictureDetailViewController *vc = [[YYPictureDetailViewController alloc] initWithAsset:asset isMain:_mainPictureIndex == indexPath.item];
@@ -75,8 +75,7 @@
         [vc setDeletePicktureBlock:^() {
             [self deletePictureAtIndex:indexPath.item];
         }];
-        
-        [((UIViewController *)self.delegate) presentViewController:vc animated:YES completion:nil];        
+        [self.viewController presentViewController:vc animated:YES completion:nil];
     }
 }
 
@@ -112,6 +111,7 @@
         layout.minimumInteritemSpacing = 10;
         
         _view = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
+        _view.backgroundColor = [UIColor clearColor];
         _view.delegate = self;
         _view.dataSource = self;
         [_view registerClass:[YYPictureViewAddCell class] forCellWithReuseIdentifier:@"add"];
@@ -122,6 +122,21 @@
 }
 
 #pragma mark - private
+- (UIViewController *)viewController {
+    UIResponder *nextResponder=[self nextResponder];
+    do {
+        //判读当前的响应者是否UIViewController
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            //如果当前相应者是VC，则直接返回
+            return (UIViewController*)nextResponder;
+        } else {
+            //否则继续回溯下一个响应者
+            nextResponder = [nextResponder nextResponder];
+        }
+    } while (nextResponder!=nil);
+    return nil;
+}
+
 - (void)deletePictureAtIndex:(NSInteger)index {
     if (index == self.mainPictureIndex) {
         self.mainPictureIndex = 0;

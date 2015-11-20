@@ -40,11 +40,12 @@
 - (void)reload_view:(NSNotification *)noti {
     [self.submit_button setTitle:[NSString stringWithFormat:@"确定(%ld/8)", self.manager.choosedAsset.count] forState:UIControlStateNormal];
     [self.collectionView reloadData];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.manager.choosedAsset.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat width = CGRectGetHeight(self.frame) - 10;
+    CGFloat width = CGRectGetHeight(self.frame) - 20;
     return CGSizeMake(width, width);
 }
 

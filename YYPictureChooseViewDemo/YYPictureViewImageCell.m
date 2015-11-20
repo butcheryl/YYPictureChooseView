@@ -25,7 +25,7 @@
         [self.contentView addSubview:self.pictureView];
         
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.deleteButton.frame = CGRectMake(-10, -10, 20, 20);
+        self.deleteButton.frame = CGRectMake(-7, -7, 20, 20);
         self.deleteButton.layer.cornerRadius = 10;
         self.deleteButton.layer.masksToBounds = YES;
         [self.deleteButton setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1]];

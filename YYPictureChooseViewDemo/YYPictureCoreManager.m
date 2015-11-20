@@ -61,7 +61,7 @@
     [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
         if (asset == nil) {
             if (complete != nil) {
-                complete(result);
+                complete([[result reverseObjectEnumerator] allObjects]);
             }
             return ;
         }
@@ -84,7 +84,7 @@
             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *st) {
                 if(asset == nil) {
                     if (complete) {
-                        self.savePhots = result;
+                        self.savePhots = [[result reverseObjectEnumerator] allObjects];
                         complete([self.savePhots copy]);
                     }
                     return ;
@@ -121,6 +121,20 @@
     }];
 }
 
+- (void)writeImageToSavedPhotosAlbum:(UIImage *)image metadata:(NSDictionary *)metadata completion:(nullable void (^)(ALAsset *asset, NSArray<ALAsset *> *assetList))completion {
+    [self.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
+        [self.assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+            if (completion) {
+                NSMutableArray *array = [NSMutableArray arrayWithObject:asset];
+                [array addObjectsFromArray:self.savePhots];
+                self.savePhots = array;
+                completion(asset, [self.savePhots copy]);
+            }
+        } failureBlock:^(NSError *error) {
+            
+        }];
+    }];
+}
 @end
 
 

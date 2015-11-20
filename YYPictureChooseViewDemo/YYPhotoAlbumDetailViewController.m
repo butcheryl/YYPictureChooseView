@@ -14,11 +14,17 @@
 #import "YYPictureCaptureDetailViewController.h"
 #import "YYGridLayout.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface YYPhotoAlbumDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface YYPhotoAlbumDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate,
+UINavigationControllerDelegate>
+
 @property (nonatomic, weak) ALAssetsGroup *group;
 @property (nonatomic, strong) NSArray<ALAsset *> *assetList;
 @property (nonatomic, strong) UICollectionView *collectionView;
+
+@property (nonatomic, strong) UIImagePickerController *picker;
 
 @property (nonatomic, assign) BOOL isCameraRoll;
 @end
@@ -28,6 +34,10 @@
     if (self = [super init]) {
         self.group = group;
         self.isCameraRoll = (group == nil ||[[_group valueForProperty:ALAssetsGroupPropertyType] intValue] == ALAssetsGroupSavedPhotos);
+        self.picker = [[UIImagePickerController alloc] init];
+        self.picker.delegate = self;
+        self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.picker.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
     }
     return self;
 }
@@ -68,9 +78,51 @@
     }
 }
 
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // 通过UIImagePickerControllerMediaType判断返回的是照片还是视频
+    NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
+    // 如果返回的type等于kUTTypeImage，代表返回的是照片,并且需要判断当前相机使用的sourcetype是拍照还是相册
+    if ([type isEqualToString:(NSString*)kUTTypeImage] && picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        // 获取图片裁剪的图
+        UIImage *origin = [info objectForKey:UIImagePickerControllerOriginalImage];
+        
+        // 获取图片的metadata数据信息
+        NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
+        
+        // 如果是拍照的照片，则需要手动保存到本地，系统不会自动保存拍照成功后的照片
+        [YY_Navi.manager writeImageToSavedPhotosAlbum:origin metadata:metadata completion:^(ALAsset *asset, NSArray<ALAsset *> *assetList) {
+            self.assetList = assetList;
+            [self.collectionView reloadData];
+            [YY_Navi.manager appendChoosedAsset:asset];
+//            [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.assetList.count - 1 inSection:_isCameraRoll?1:0]]];
+        }];
+    }
+    
+    //模态方式退出uiimagepickercontroller
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_isCameraRoll && indexPath.section == 0) {
+        NSString *mediaType = AVMediaTypeVideo;// Or AVMediaTypeAudio
+        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:mediaType];
+
+        if(authStatus == AVAuthorizationStatusDenied){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"请在设备的\"设置-隐私-相机\"中允许访问相机"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+            [alert show];
+            return;
+        } else if(authStatus == AVAuthorizationStatusNotDetermined){
+            // Explicit user permission is required for media capture, but the user has not yet granted or denied such permission.
+            [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {}];
+        }
+        
+        [self presentViewController:self.picker animated:YES completion:nil];
         return ;
     }
     
@@ -145,7 +197,7 @@
             [(UICollectionViewFlowLayout *)layout setMinimumInteritemSpacing:5];
         }
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - 80) collectionViewLayout:layout];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         [_collectionView registerClass:[YYPictureCaptureCameraCollectionViewCell class] forCellWithReuseIdentifier:@"camera"];

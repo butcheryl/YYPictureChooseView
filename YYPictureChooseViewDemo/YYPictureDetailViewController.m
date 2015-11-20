@@ -18,8 +18,8 @@
     if (self = [super init]) {
         self.asset = asset;
         self.isMainPicture = isMain;
-
     }
+    
     return self;
 }
 

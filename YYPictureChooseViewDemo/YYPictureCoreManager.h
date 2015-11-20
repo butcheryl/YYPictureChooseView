@@ -6,6 +6,7 @@
 //  Copyright © 2015年 leju. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -42,7 +43,6 @@ extern NSString * const YYPictureEventRemoveAsset;
  */
 - (void)appendChoosedAsset:(ALAsset *)asset;
 
-
 /**
  *  @brief  删除一个ALAsset
  *
@@ -75,4 +75,9 @@ extern NSString * const YYPictureEventRemoveAsset;
  *  @param complete 成功回调
  */
 - (void)getGroupList:(void (^)(NSArray<ALAssetsGroup *> *result))complete;
+
+
+- (void)writeImageToSavedPhotosAlbum:(UIImage *)image
+                            metadata:(NSDictionary *)metadata
+                          completion:(nullable void (^)(ALAsset *asset, NSArray<ALAsset *> *assetList))completion;
 @end

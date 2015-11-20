@@ -16,10 +16,12 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if ([super initWithFrame:frame]) {
+        self.contentView.backgroundColor = [UIColor lightGrayColor];
         self.label = [[UILabel alloc] init];
         self.label.text = @"+";
         self.label.textAlignment = NSTextAlignmentCenter;
-        self.label.font = [UIFont boldSystemFontOfSize:60];
+        self.label.font = [UIFont systemFontOfSize:80];
+        [self.label sizeToFit];
         [self.contentView addSubview:self.label];
     }
     return self;
@@ -28,6 +30,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.label.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+    
+    self.label.center = CGPointMake(CGRectGetWidth(self.contentView.frame)/2., CGRectGetHeight(self.contentView.frame)/2. - 5);
 }
 @end
