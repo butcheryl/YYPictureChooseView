@@ -155,12 +155,12 @@
 		34D910441C030E0500023E9C /* YYPictureChooseView */ = {
 			isa = PBXGroup;
 			children = (
+				34D910521C030E0500023E9C /* YYPictureChooseView.h */,
+				34D910531C030E0500023E9C /* YYPictureChooseView.m */,
 				34D910851C0311B000023E9C /* image */,
 				34D910451C030E0500023E9C /* BEMCheckBox */,
 				34D9104C1C030E0500023E9C /* Category */,
 				34D9104F1C030E0500023E9C /* Core */,
-				34D910521C030E0500023E9C /* YYPictureChooseView.h */,
-				34D910531C030E0500023E9C /* YYPictureChooseView.m */,
 				34D910541C030E0500023E9C /* YYPictureDetail */,
 				34D9105C1C030E0500023E9C /* YYPictureNavigation */,
 				34D910611C030E0500023E9C /* YYPicturePhotoAlbum */,

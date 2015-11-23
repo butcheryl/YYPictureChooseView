@@ -87,7 +87,7 @@
         [YY_Navi.manager writeImageToSavedPhotosAlbum:origin metadata:metadata completion:^(ALAsset *asset, NSArray<ALAsset *> *assetList) {
             self.assetList = assetList;
 //            [self.collectionView reloadData];
-//            [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.assetList.count - 1 inSection:_isCameraRoll?1:0]]];
+            [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.assetList.count - 1 inSection:_isCameraRoll?1:0]]];
             [YY_Navi.manager appendChoosedAsset:asset];
         }];
     }
@@ -115,7 +115,8 @@
             [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {}];
         }
         
-        [self presentViewController:self.picker animated:YES completion:nil];
+        [self presentViewController:self.picker animated:YES completion:^{}];
+        
         return ;
     }
     
