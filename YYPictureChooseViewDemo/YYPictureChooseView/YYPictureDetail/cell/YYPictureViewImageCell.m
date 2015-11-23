@@ -26,20 +26,15 @@
         
         self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.deleteButton.frame = CGRectMake(-7, -7, 20, 20);
-        self.deleteButton.layer.cornerRadius = 10;
-        self.deleteButton.layer.masksToBounds = YES;
-        [self.deleteButton setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1]];
-        [self.deleteButton setTitle:@"×" forState:UIControlStateNormal];
-        [self.deleteButton setTitleColor:[UIColor colorWithRed:250/255. green:214/255. blue:87/255. alpha:1] forState:UIControlStateNormal];
-        
+        [self.deleteButton setImage:[UIImage imageNamed:@"camera_delete_image_icon"] forState:UIControlStateNormal];
         [self.deleteButton addTarget:self action:@selector(delete_button_clicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.deleteButton];
 
         self.mainPictureTag = [[UILabel alloc] init];
         self.mainPictureTag.hidden = YES;
         self.mainPictureTag.text = @"主图";
-        self.mainPictureTag.font = [UIFont systemFontOfSize:13];
-        self.mainPictureTag.textColor = [UIColor darkGrayColor];
+        self.mainPictureTag.font = [UIFont systemFontOfSize:11];
+        self.mainPictureTag.textColor = [UIColor blackColor];
         self.mainPictureTag.textAlignment = NSTextAlignmentCenter;
         self.mainPictureTag.backgroundColor = [UIColor colorWithRed:250/255. green:214/255. blue:87/255. alpha:1];
         [self.contentView addSubview:self.mainPictureTag];
@@ -50,7 +45,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.pictureView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame), CGRectGetHeight(self.contentView.frame));
-    self.mainPictureTag.frame = CGRectMake(0, CGRectGetHeight(self.contentView.frame) - 20, CGRectGetWidth(self.contentView.frame), 20);
+    self.mainPictureTag.frame = CGRectMake(0, CGRectGetHeight(self.contentView.frame) - 20, CGRectGetWidth(self.contentView.frame), 21);
 }
 
 - (void)delete_button_clicked:(UIButton *)button {

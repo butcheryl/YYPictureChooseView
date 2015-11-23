@@ -38,8 +38,7 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(left_bar_button_clicked:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"album_back"] style:UIBarButtonItemStylePlain target:self action:@selector(left_bar_button_clicked:)];
     
     BEMCheckBox *button = [[BEMCheckBox alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     button.tag = 999;

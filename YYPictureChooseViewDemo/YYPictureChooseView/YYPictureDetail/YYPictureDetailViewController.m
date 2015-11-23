@@ -28,12 +28,11 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor blackColor];
     UIButton *back_button = [UIButton buttonWithType:UIButtonTypeCustom];
-    back_button.frame = CGRectMake(0, 0, 100, 44);
-    [back_button setTitle:@"<" forState:UIControlStateNormal];
-    [back_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [back_button setImage:[UIImage imageNamed:@"album_back"] forState:UIControlStateNormal];
+    [back_button sizeToFit];
+    back_button.frame = CGRectMake(10, 0, back_button.frame.size.width + 20, 44);
     [back_button addTarget:self action:@selector(back_button_clicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:back_button];
-    
     
     UIButton *delete_button = [UIButton buttonWithType:UIButtonTypeCustom];
     delete_button.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 100, 0, 100, 44);
@@ -50,7 +49,7 @@
     UIButton *main_button = [UIButton buttonWithType:UIButtonTypeCustom];
     main_button.frame = CGRectMake(0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44);
     [main_button setTitle:_isMainPicture?@"主图":@"设为主图" forState:UIControlStateNormal];
-    [main_button setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
+    [main_button setTitleColor:[UIColor colorWithRed:250/255. green:214/255. blue:87/255. alpha:1] forState:UIControlStateNormal];
     if (!_isMainPicture) {
         [main_button addTarget:self action:@selector(main_button_clicked:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -86,6 +85,10 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 @end

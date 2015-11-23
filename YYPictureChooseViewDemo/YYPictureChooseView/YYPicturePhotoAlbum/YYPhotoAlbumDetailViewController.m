@@ -17,15 +17,11 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface YYPhotoAlbumDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate,
-UINavigationControllerDelegate>
-
+@interface YYPhotoAlbumDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, weak) ALAssetsGroup *group;
 @property (nonatomic, strong) NSArray<ALAsset *> *assetList;
 @property (nonatomic, strong) UICollectionView *collectionView;
-
 @property (nonatomic, strong) UIImagePickerController *picker;
-
 @property (nonatomic, assign) BOOL isCameraRoll;
 @end
 
@@ -47,7 +43,6 @@ UINavigationControllerDelegate>
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
     self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:20], NSForegroundColorAttributeName: [UIColor whiteColor]};
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
@@ -65,8 +60,6 @@ UINavigationControllerDelegate>
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventAppendAsset object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventRemoveAsset object:nil];
-
-    
 }
 
 - (void)reload_view:(NSNotification *)noti {
@@ -93,9 +86,9 @@ UINavigationControllerDelegate>
         // 如果是拍照的照片，则需要手动保存到本地，系统不会自动保存拍照成功后的照片
         [YY_Navi.manager writeImageToSavedPhotosAlbum:origin metadata:metadata completion:^(ALAsset *asset, NSArray<ALAsset *> *assetList) {
             self.assetList = assetList;
-            [self.collectionView reloadData];
-            [YY_Navi.manager appendChoosedAsset:asset];
+//            [self.collectionView reloadData];
 //            [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.assetList.count - 1 inSection:_isCameraRoll?1:0]]];
+            [YY_Navi.manager appendChoosedAsset:asset];
         }];
     }
     
@@ -146,7 +139,6 @@ UINavigationControllerDelegate>
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_isCameraRoll && indexPath.section == 0) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"camera" forIndexPath:indexPath];
-        cell.backgroundColor = [UIColor redColor];
         return cell;
     }
     
@@ -196,10 +188,10 @@ UINavigationControllerDelegate>
             [(UICollectionViewFlowLayout *)layout setMinimumLineSpacing:5];
             [(UICollectionViewFlowLayout *)layout setMinimumInteritemSpacing:5];
         }
-        
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - 80) collectionViewLayout:layout];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
+        _collectionView.backgroundColor = [UIColor whiteColor];
         [_collectionView registerClass:[YYPictureCaptureCameraCollectionViewCell class] forCellWithReuseIdentifier:@"camera"];
         [_collectionView registerClass:[YYPhotoAlbumDetailCollectionViewCell class] forCellWithReuseIdentifier:@"picture"];
     }

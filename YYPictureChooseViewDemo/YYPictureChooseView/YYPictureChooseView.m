@@ -19,25 +19,47 @@
 @property (nonatomic, strong) UICollectionView *view;
 @property (nonatomic, assign) NSInteger mainPictureIndex;
 @property (nonatomic, strong) YYPictureCoreManager *manager;
+@property (nonatomic, strong, nullable) NSMutableArray *choosedData;
 @end
 
 @implementation YYPictureChooseView
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor whiteColor];
-        self.manager = [[YYPictureCoreManager alloc] init];
-        self.choosedData = [NSMutableArray array];
+- (instancetype)init {
+    if (self = [super init]) {
         
-        [self addSubview:self.view];
-        
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventAppendAsset object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventRemoveAsset object:nil];
     }
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        [self setup];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup {
+    self.manager = [[YYPictureCoreManager alloc] init];
+    self.choosedData = [NSMutableArray array];
+    [self addSubview:self.view];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventAppendAsset object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventRemoveAsset object:nil];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (!CGSizeEqualToSize(self.frame.size, self.view.frame.size)) {
+        self.view.frame = self.bounds;
+    }
+}
 - (void)reload_view:(NSNotification *)noti {
     [self.view reloadData];
 }
@@ -62,6 +84,10 @@
         [navi setSubmit_click_block:^(NSArray<ALAsset *> *assets) {
             self.choosedData = [NSMutableArray arrayWithArray:assets];
             [self.view reloadData];
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureChooseView:photosCountChange:)]) {
+                [self.delegate pictureChooseView:self photosCountChange:self.choosedData];
+            }
         }];
         [self.viewController presentViewController:navi animated:YES completion:nil];
     } else {
@@ -95,6 +121,9 @@
         [(YYPictureViewImageCell *)cell setAsset:self.choosedData[indexPath.item]];
         [(YYPictureViewImageCell *)cell setDeleteButtonClickedAction:^(YYPictureViewImageCell *cell) {
             [self deletePictureAtIndex:indexPath.item];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureChooseView:photosCountChange:)]) {
+                [self.delegate pictureChooseView:self photosCountChange:self.choosedData];
+            }
         }];
         
         cell.backgroundColor = [UIColor whiteColor];
@@ -154,5 +183,22 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - getter/setter
+- (NSArray *)lastChooseData {
+    return self.choosedData;
+}
+
+- (void)setLastChooseData:(NSArray *)lastChooseData {
+    if (lastChooseData) {
+        self.choosedData = [NSMutableArray arrayWithArray:lastChooseData];
+    } else {
+        self.choosedData = @[].mutableCopy;
+    }
+    
+    [self.manager settingChoosedAssets:lastChooseData];
+    [self.view reloadData];
+}
+
 
 @end

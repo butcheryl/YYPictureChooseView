@@ -20,8 +20,6 @@
         self.picture_view.clipsToBounds = YES;
         self.picture_view.contentMode = UIViewContentModeScaleToFill;
         [self.contentView addSubview:self.picture_view];
-        
-        
     }
     return self;
 }

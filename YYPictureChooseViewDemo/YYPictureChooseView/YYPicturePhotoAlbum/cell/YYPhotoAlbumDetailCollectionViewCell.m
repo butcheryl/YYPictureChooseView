@@ -53,7 +53,7 @@
     [super layoutSubviews];
     
     self.picture_view.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame), CGRectGetHeight(self.contentView.frame));
-    self.choose_button.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 30, 0, 30, 30);
+    self.choose_button.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 30 -2, 2, 30, 30);
     [self.choose_button reload];
 }
 

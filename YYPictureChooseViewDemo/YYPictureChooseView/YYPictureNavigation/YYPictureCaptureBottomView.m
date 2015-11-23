@@ -23,13 +23,14 @@
         [self addSubview:self.collectionView];
         
         self.submit_button = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.submit_button.enabled = NO;
         self.submit_button.frame = CGRectMake(CGRectGetMaxX(self.collectionView.frame) + 10, 20, 60, 40);
         self.submit_button.titleLabel.font = [UIFont systemFontOfSize:13];
-        [self.submit_button setBackgroundColor:[UIColor whiteColor]];
-        [self.submit_button setTitle:@"确定" forState:UIControlStateNormal];
-        [self.submit_button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [self.submit_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.submit_button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
         [self.submit_button addTarget:self action:@selector(submit_button_clicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.submit_button];
+        
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventAppendAsset object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload_view:) name:YYPictureEventRemoveAsset object:nil];
@@ -38,7 +39,15 @@
 }
 
 - (void)reload_view:(NSNotification *)noti {
+    if (self.manager.choosedAsset.count == 0) {
+        self.submit_button.enabled = NO;
+        [self.submit_button setBackgroundColor:[UIColor lightGrayColor]];
+    } else {
+        self.submit_button.enabled = YES;
+        [self.submit_button setBackgroundColor:[UIColor colorWithRed:250/255. green:214/255. blue:87/255. alpha:1]];
+    }
     [self.submit_button setTitle:[NSString stringWithFormat:@"确定(%ld/8)", self.manager.choosedAsset.count] forState:UIControlStateNormal];
+    
     [self.collectionView reloadData];
     if (self.manager.choosedAsset.count > 0) {
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.manager.choosedAsset.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
@@ -66,15 +75,14 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    __block ALAsset *asset = self.manager.choosedAsset[indexPath.item];
-    
-    [(YYPictureViewImageCell *)cell setAsset:asset];
-    [(YYPictureViewImageCell *)cell setDeleteButtonClickedAction:^(YYPictureViewImageCell *cell) {
-        [self.manager removeChoosedAsset:asset];
-    }];
-    
     cell.backgroundColor = [UIColor whiteColor];
+    ALAsset *asset = self.manager.choosedAsset[indexPath.item];
+    [(YYPictureViewImageCell *)cell setAsset:asset];
     
+    __weak __typeof(self) weakSelf = self;
+    [(YYPictureViewImageCell *)cell setDeleteButtonClickedAction:^(YYPictureViewImageCell *cell) {
+        [weakSelf.manager removeChoosedAsset:asset];
+    }];
     return cell;
 }
 
@@ -85,6 +93,19 @@
 }
 
 #pragma mark - getter/setter
+- (void)setManager:(YYPictureCoreManager *)manager {
+    _manager = manager;
+    
+    if (_manager.choosedAsset.count == 0) {
+        self.submit_button.enabled = NO;
+        [self.submit_button setBackgroundColor:[UIColor lightGrayColor]];
+    } else {
+        self.submit_button.enabled = YES;
+        [self.submit_button setBackgroundColor:[UIColor colorWithRed:250/255. green:214/255. blue:87/255. alpha:1]];
+    }
+    [self.submit_button setTitle:[NSString stringWithFormat:@"确定(%ld/8)", _manager.choosedAsset.count] forState:UIControlStateNormal];
+}
+
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];

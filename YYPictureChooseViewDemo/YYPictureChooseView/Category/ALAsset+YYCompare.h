@@ -7,7 +7,8 @@
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <UIKit/UIKit.h>
 
 @interface ALAsset (YYCompare)
-
+- (UIImage *)getFullResolutionImage;
 @end

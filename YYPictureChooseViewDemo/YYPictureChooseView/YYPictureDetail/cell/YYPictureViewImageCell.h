@@ -10,7 +10,7 @@
 @class ALAsset;
 
 @interface YYPictureViewImageCell : UICollectionViewCell
-@property (nonatomic, strong) ALAsset *asset;
+@property (nonatomic, weak) ALAsset *asset;
 @property (nonatomic, assign) BOOL isMainPicture;
 @property (nonatomic, copy) void (^deleteButtonClickedAction)(YYPictureViewImageCell *cell);
 @end
